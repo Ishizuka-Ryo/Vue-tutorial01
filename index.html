@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.jsチュートリアル</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+
+<body>
+    <!-- 宣言的レンダリング -->
+    <div id="app">
+        {{ message }}
+    </div>
+
+    <!-- v-bindは動的にコンポーネントのプロパティを変更できるやつ -->
+    <div id="app-2">
+        <span v-bind:title="message">Hover your mouse over me for a few seconds to see my dynamically bound title!</span>
+    </div>
+
+    <!-- 条件分岐とループ -->
+
+    <!-- v ifは真偽で要素を表示するかしないかできるやつ -->
+    <div id="app-3">
+        <span v-if="seen">Now you see me</span>
+    </div>
+ 　　
+    <!-- v forはリストをレンダリングするためのやつ -->
+    <div id="app-4">
+        <ol>
+            <li v-for="todo in todos">
+                {{todo.text}}
+            </li>
+        </ol>
+    </div>
+
+    <!-- ユーザーの入力制御 -->
+    <!-- v-onはボタンをクリックしたり、マウスオーバー及びスクロールなどのユーザーによる一連の挙動を「イベント」を呼ぶやつ -->
+    <div id="app-5">
+        <p>{{message}}</p>
+        <button v-on:click="reserveMessage">ReserveMessage</button>
+    </div>
+
+    <!-- 双方向バインディングが簡単に行えるやつ -->
+    <div id="app-6">
+        <p>{{message}}</p>
+        <input v-model="message">
+    </div>
+
+    <!-- コンポーネントによる構成 -->
+    <div id="app-7">
+        <ol>
+            <todo-item 
+            v-for="item in groceryList"
+            v-bind:todo="item"
+            v-bind:key="item.id"
+            ></todo-item>
+        </ol>
+    </div>
+</body>
+
+ <script>
+    // 宣言的レンダリング
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!'
+        }
+    })
+
+    var app2 = new Vue({
+        el:'#app-2',
+        data: {
+            message:'You load this page on' + new Date().toLocaleDateString()
+        }
+    })
+
+    // 条件分岐とループ
+    var app3 = new Vue({
+        el:'#app-3',
+        data:{
+            seen:true
+        }
+    })
+
+    var app4 = new Vue({
+        el:'#app-4',
+        data:{
+            todos:[
+                {text:'Learn Javascript'},
+                {text:'Learn Vue'},
+                {text:'Build something awesome'}
+            ]
+        }
+    })
+
+    // ユーザーの入力制御
+    var app5 = new Vue({
+        el:'#app-5',
+        data:{
+            message: 'Hello Vue.js!'
+        },
+        methods:{
+            reserveMessage:function(){
+                this.message = this.message.split('').reverse().join('')
+            }
+        }
+    })
+
+    var app6 = new Vue ({
+        el:'#app-6',
+        data:{
+            message:'Hello Vue!'
+        }
+    })
+
+    // <!-- todo-itemと呼ばれる新しいコンポーネントを定義 -->
+    Vue.component('todo-item',{
+        props:['todo'],
+        template:'<li>This is a todo</li>'
+    })
+
+    var app7 = new Vue({
+        el:'#app-7',
+        data:{
+            groceryList:[
+                {id: 0, text:'Vegetables'},
+                {id: 1, text:'Cheese'},
+                {id: 2, text:'Whatever else humans are supposed to eat'}
+            ]
+        }
+    })
+</script>
+
+</html>
